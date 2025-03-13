@@ -1,0 +1,29 @@
+<!doctype html>
+<html data-theme="dim" lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>List compare</title>
+    <link href="./output.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+
+<body class=" text-base-content">
+    <div class="mt-4 flex items-center justify-center">
+        <form class="flex flex-col items-center gap-4 p-4  rounded shadow" hx-post="/compare" hx-target="#result">
+            <input class="input input-primary w-full p-2 m-2" type="text" id="list1" name="list1"
+                placeholder="Enter list 1" />
+            <input class="input input-primary w-full p-2" type="text" id="list2" name="list2"
+                placeholder="Enter list 2" />
+            <input class="btn btn-primary" type="submit" value="Submit" />
+        </form>
+    </div>
+    <div id="result" class="mt-4"></div>
+
+</body>
+
+</html>
