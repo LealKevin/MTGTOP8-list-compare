@@ -9,6 +9,7 @@ import (
 func InitServer() {
 	mux := Router()
 
+	// Serve the static files
 	fs := http.FileServer(http.Dir("./static"))
 	mux.Handle("/*", fs)
 

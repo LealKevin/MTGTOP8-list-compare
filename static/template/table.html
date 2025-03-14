@@ -1,0 +1,21 @@
+<div class="overflow-x-auto flex items-start justify-center w-full">
+    {{range.Tables}}
+    <table
+        class="table table-s m-4 p-2 table-zebra border-separate border border-solid border-primary border-base-content/8 bg-base-100">
+        <thead>
+            <tr>
+                <th></th>
+                <th colspan="2" class="text-accent">{{.Label}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range.Pairs}}
+            <tr>
+                <th>{{.Value}}</th>
+                <td>{{.Key}}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    {{end}}
+</div>

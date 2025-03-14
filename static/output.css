@@ -6642,6 +6642,9 @@
     --size: calc(var(--size-selector, 0.25rem) * 4);
   }
 }
+.p-0 {
+  padding: calc(var(--spacing) * 0);
+}
 .p-2 {
   padding: calc(var(--spacing) * 2);
 }

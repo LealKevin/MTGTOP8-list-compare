@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/net/html/charset"
 )
 
 type Pair struct {
@@ -31,17 +32,30 @@ type Player struct {
 func ScrapList(url string) (List, Player) {
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatalf("Erreur lors de la récupération de l'URL : %v", err)
+		log.Fatalf("Unable to get URL : %v", err)
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		log.Fatalf("Erreur : status code %d", res.StatusCode)
+		log.Fatalf("Error : status code %d", res.StatusCode)
 	}
-	doc, err := goquery.NewDocumentFromReader(res.Body)
+
+	reader, err := charset.NewReader(res.Body, res.Header.Get("Content-Type"))
+
+	log.Printf("Content Type: %s", res.Header.Get("Content-Type"))
+
+	doc, err := goquery.NewDocumentFromReader(reader)
 	if err != nil {
-		log.Fatalf("Erreur lors du parsing HTML : %v", err)
+		log.Fatalf("Error parsing HTML : %v", err)
 	}
 	cards := make(map[string]int)
+
+	// Find the div with the class deck_line
+	// For each div found, get the Text
+	// Split the text into Fields
+	// Convert the first field to an integer
+	// Get the card name
+	// Add the card name and quantity to the cards map
+
 	doc.Find("div.deck_line").Each(func(i int, s *goquery.Selection) {
 		fullText := s.Text()
 		fields := strings.Fields(fullText)
@@ -61,9 +75,11 @@ func ScrapList(url string) (List, Player) {
 		}
 	})
 
+	// Find the player name
 	playerSelection := doc.Find("a.player_big")
 	player := Player{Name: playerSelection.Text()}
-	log.Printf("Player name: %s", player)
+	//log.Printf("List 1: %v", cards)
+	//log.Printf("Player name: %s", player)
 	return List{Line: cards}, player
 }
 
@@ -72,6 +88,11 @@ func Compare(list1, list2 List) [][]Pair {
 	dif2 := make(map[string]int)
 	same := make(map[string]int)
 
+	// For each card in list1, check if it exists in list2
+	// If it exists, check if the quantity is the same
+	// If the quantity is the same, add it to the same map
+	// If the quantity is different, add it to the dif1 or dif2 map
+	// If the card does not exist in list2, add it to the dif1 map
 	for name, quantity1 := range list1.Line {
 		if quantity2, exists := list2.Line[name]; exists {
 			if quantity1 == quantity2 {
@@ -88,6 +109,8 @@ func Compare(list1, list2 List) [][]Pair {
 		}
 	}
 
+	// For each card in list2, check if it exists in list1
+	// If it does not exist, add it to the dif2 map
 	for name, quantity2 := range list2.Line {
 		if _, exists := list1.Line[name]; !exists {
 			dif2[name] = quantity2
