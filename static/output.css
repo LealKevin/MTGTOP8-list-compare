@@ -3524,6 +3524,9 @@
     cursor: pointer;
   }
 }
+.z-8 {
+  z-index: 8;
+}
 .z-auto {
   z-index: auto;
 }
@@ -4031,6 +4034,9 @@
       opacity: 0%;
     }
   }
+}
+.mx-auto {
+  margin-inline: auto;
 }
 .file-input-ghost {
   background-color: transparent;
@@ -5065,6 +5071,9 @@
     font-size: 0.6875rem;
   }
 }
+.h-8 {
+  height: calc(var(--spacing) * 8);
+}
 .h-screen {
   height: 100vh;
 }
@@ -5176,8 +5185,14 @@
 .loading-xs {
   width: calc(var(--size-selector, 0.25rem) * 4);
 }
+.w-1 {
+  width: calc(var(--spacing) * 1);
+}
 .w-1\/2 {
   width: calc(1/2 * 100%);
+}
+.w-auto {
+  width: auto;
 }
 .w-full {
   width: 100%;
@@ -5193,6 +5208,9 @@
 }
 .min-w-screen {
   min-width: 100vw;
+}
+.flex-1 {
+  flex: 1;
 }
 .flex-auto {
   flex: auto;
@@ -6250,6 +6268,9 @@
   color: var(--color-warning-content);
   --alert-color: var(--color-warning);
 }
+.border-base-content {
+  border-color: var(--color-base-content);
+}
 .border-base-content\/8 {
   border-color: color-mix(in oklab, var(--color-base-content) 8%, transparent);
 }
@@ -6650,6 +6671,9 @@
 }
 .p-4 {
   padding: calc(var(--spacing) * 4);
+}
+.p-6 {
+  padding: calc(var(--spacing) * 6);
 }
 .menu-title {
   padding-inline: calc(0.25rem * 3);

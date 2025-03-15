@@ -1,3 +1,10 @@
+{{if.Error}}
+<div class="alert alert-error  alert-dash items-center  mx-auto w-1/2 p-4">
+    <div class=" text-center flex justify-center ">
+        <label class="text-center">{{.Error}}</label>
+    </div>
+</div>
+{{ end }}
 <div class="overflow-x-auto flex items-start justify-center w-full">
     {{range.Tables}}
     <table

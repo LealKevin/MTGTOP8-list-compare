@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"sort"
@@ -29,23 +31,27 @@ type Player struct {
 	Name string
 }
 
-func ScrapList(url string) (List, Player) {
+func ScrapList(url string) (List, Player, error) {
+
 	res, err := http.Get(url)
 	if err != nil {
-		log.Fatalf("Unable to get URL : %v", err)
+		return List{}, Player{}, fmt.Errorf("Unable to get URL : %v", err)
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		log.Fatalf("Error : status code %d", res.StatusCode)
+		return List{}, Player{}, fmt.Errorf("Expected status code 200, but got %d", res.StatusCode)
 	}
 
 	reader, err := charset.NewReader(res.Body, res.Header.Get("Content-Type"))
+	if err != nil {
+		return List{}, Player{}, errors.New("Unable to get charset reader")
+	}
 
 	log.Printf("Content Type: %s", res.Header.Get("Content-Type"))
 
 	doc, err := goquery.NewDocumentFromReader(reader)
 	if err != nil {
-		log.Fatalf("Error parsing HTML : %v", err)
+		return List{}, Player{}, fmt.Errorf("Error parsing HTML: %v", err)
 	}
 	cards := make(map[string]int)
 
@@ -80,7 +86,7 @@ func ScrapList(url string) (List, Player) {
 	player := Player{Name: playerSelection.Text()}
 	//log.Printf("List 1: %v", cards)
 	//log.Printf("Player name: %s", player)
-	return List{Line: cards}, player
+	return List{Line: cards}, player, nil
 }
 
 func Compare(list1, list2 List) [][]Pair {
