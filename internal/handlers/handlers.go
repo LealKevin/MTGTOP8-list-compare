@@ -2,9 +2,12 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/LealKevin/list-compare/internal/utils"
 	"html/template"
+	"io"
 	"net/http"
+
+	"github.com/LealKevin/list-compare/internal/utils"
+	"github.com/go-chi/chi/v5"
 )
 
 type TableData struct {
@@ -50,6 +53,33 @@ func CompareHandler(w http.ResponseWriter, r *http.Request) {
 	// Execute the template
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	tableTemplate.Execute(w, tableData)
+}
+
+func GetImage(w http.ResponseWriter, r *http.Request) {
+	imageName := chi.URLParam(r, "name")
+	fmt.Println("🔥 Requête reçue pour:", imageName)
+
+	imageURL := "https://api.scryfall.com/cards/named?fuzzy=" + imageName
+	resp, err := http.Get(imageURL)
+	if err != nil {
+		http.Error(w, "Error downloading image", http.StatusInternalServerError)
+		return
+	}
+
+	if resp.StatusCode != 200 {
+		http.Error(w, "Error downloading image", http.StatusInternalServerError)
+		return
+	}
+
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		http.Error(w, "Error downloading image", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Printf("Json: %s", string(body))
 }
 
 func HomePageHandler(w http.ResponseWriter, r *http.Request) {

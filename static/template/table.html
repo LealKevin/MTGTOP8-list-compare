@@ -12,15 +12,20 @@
         <thead>
             <tr>
                 <th></th>
-                <th colspan="2" class="text-accent">{{.Label}}</th>
+                static <th colspan="2" class="text-accent">{{.Label}}</th>
             </tr>
         </thead>
         <tbody>
             {{range.Pairs}}
-            <tr>
+            <tr hx-trigger="mouseover" hx-get="/image/{{.Key}}" hx-target="#image-{{.Key}}" hx-swap="outerHTML"
+                hx-on::before-request="console.log('HTMX envoie une requête pour', '{{.Key}}')"
+                hx-on::after-request="console.log('Réponse reçue pour', '{{.Key}}')">
+
                 <th>{{.Value}}</th>
                 <td>{{.Key}}</td>
             </tr>
+            <div id="image-{{.Key}}"> </div>
+
             {{end}}
         </tbody>
     </table>

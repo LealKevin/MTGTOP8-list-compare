@@ -9,6 +9,7 @@ func Router() *chi.Mux {
 	mux := chi.NewRouter()
 
 	mux.Get("/", handlers.HomePageHandler)
+	mux.Get("/image/{name}", handlers.GetImage)
 	mux.Post("/compare", handlers.CompareHandler)
 
 	return mux
